@@ -1,0 +1,75 @@
+const timezone = "Europe/Paris";
+const time = new Date().toLocaleString("fr-FR", { timeZone: timezone });
+const serverVar = parseInt($getServerVar("serveur")) + 1;
+const channelID = "1101253038976548955";
+const cooldown = "120m";
+const serverCooldownMsg = `<:Time:1101239424878125249> | **Le serveur a été bump il y a peu de temps ! Veuillez attendre** *${time}* **avant de bump le serveur !**`;
+const serverInvite = $getServerInvite();
+const serverName = $serverName($guildID);
+const membersCount = $membersCount;
+const serverOwner = $userTag($serverOwner);
+const bumpInfoMsg = `
+**__Informations sur le serveur__** :
+<:Head:1101212887890014359> | **Nom** : *[${serverName}](${serverInvite})*
+<:Members:1101212884425527296> | **Membres** : ${membersCount}
+<:King:1101237866513834065> | **Propriétaire** : ${serverOwner}
+
+**__Informations sur le bump__** :
+<:Ticket:1101212875495845950> | **Nombre de Bump** : ${serverVar}
+<:Member:1101212879031631892> | **Bump par** : <@${authorID}>
+
+**__Liens du serveur__** :
+<:Link:1101212871041491015> | **Invitation** : [Clique ici](${serverInvite})
+`;
+
+const footer = "Boost Your Server";
+const color = "#001aff";
+const bumpResultMsg = `<:Ticket:1101212875495845950> | **Le serveur à été bump avec succès ! Voir le résultat :** (https://discord.com/channels/1101149828802691152/1101253038976548955)`;
+const supportLink = "https://discord.gg/4JpnN6mqAP";
+const errorMsg = `<:Warning:1101239338521604216> | **Une erreur est survenue ! Utilisez \`*bump\` mais si cela persiste contactez le support** (${supportLink}) **!**`;
+const authorAvatar = $authorAvatar;
+const serverIcon = $serverIcon;
+const serverInviteButton = {
+  type: 2,
+  label: "Voir le serveur",
+  style: 5,
+  url: serverInvite,
+};
+const membersCountButton = {
+  type: 2,
+  label: `${membersCount} Membres`,
+  style: 1,
+  custom_id: "yes",
+};
+
+const messageData = {
+  embeds: [
+    {
+      title: `${serverName} a été bump avec succès !`,
+      description: bumpInfoMsg,
+      color: color,
+      footer: {
+        text: footer,
+        icon_url: authorAvatar,
+      },
+      thumbnail: {
+        url: serverIcon,
+      },
+      image: {
+        url: "https://media.discordapp.net/attachments/1101203397283164210/1101207843241205910/1.png",
+      },
+    },
+  ],
+  components: [
+    {
+      type: 1,
+      components: [serverInviteButton, membersCountButton],
+    },
+  ],
+};
+
+fetch(`https://discord.com/api/v10/channels/${channelID}/messages`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: "
